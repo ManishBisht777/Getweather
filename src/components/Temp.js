@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 function Temp() {
-  const [city, setcity] = useState("delhi");
-  const [search, setsearch] = useState("delhi");
+  const [city, setcity] = useState("Delhi");
+  const [search, setsearch] = useState("Delhi");
+  const [data, setdata] = useState("0");
 
   useEffect(() => {
     const fetchapi = async () => {
@@ -11,8 +12,9 @@ function Temp() {
 
       const response = await fetch(url);
       const resjson = await response.json();
-      //   console.log(resjson);
       setcity(resjson.main);
+      setdata(resjson.weather[0]);
+      console.log(resjson);
     };
     fetchapi();
   }, [search]);
@@ -23,20 +25,34 @@ function Temp() {
         <Background>
           <img src="/images/w1.jpg" alt="" />
         </Background>
-        <input
-          type="search"
-          onChange={(event) => {
-            setsearch(event.target.value);
-          }}
-        />
+        <Searchbar>
+          <ion-icon name="search"></ion-icon>
+          <input
+            type="search"
+            placeholder="Type Here"
+            onChange={(event) => {
+              setsearch(event.target.value);
+            }}
+          />
+        </Searchbar>
         {!city ? (
           <p>No data found</p>
         ) : (
-          <Cont1>
-            <h3>{city.temp}</h3>
-            <h2>{search}</h2>
-            <span>Icon</span>
-          </Cont1>
+          <>
+            <Cont1>
+              <h3>{city.temp} °</h3>
+              <h2>{search}</h2>
+              <ion-icon name="sunny-outline"></ion-icon>
+              <Description>
+                <p>{data.description}</p>
+              </Description>
+              <Maxmin>
+                <span>Min {city.temp_min}</span>
+                <span>Max {city.temp_max}</span>
+              </Maxmin>
+            </Cont1>
+            <Cont2></Cont2>
+          </>
         )}
       </Mainbox>
     </div>
@@ -51,7 +67,6 @@ const Mainbox = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `;
 
 const Background = styled.div`
@@ -78,17 +93,64 @@ const Background = styled.div`
 // `;
 
 const Cont1 = styled.div`
+  margin: 20px;
   h3 {
-    font-size: 40px;
+    font-size: 80px;
     letter-spacing: 1px;
     color: rgb(249, 249, 249);
     margin: 5px;
   }
 
   h2 {
-    font-size: 30px;
+    font-size: 40px;
     letter-spacing: 1px;
     color: #a9a9a9;
     margin: 5px;
   }
+
+  ion-icon {
+    font-size: 80px;
+    color: white;
+    margin: 5px 20px;
+  }
+`;
+
+const Searchbar = styled.div`
+  margin: 20px;
+  background: white;
+  width: fit-content;
+  border-radius: 40px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+
+  ion-icon {
+    font-size: 20px;
+    margin: 0px 5px;
+  }
+
+  input {
+    background: transparent;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+`;
+
+const Cont2 = styled.div``;
+
+const Maxmin = styled.div`
+  width: 158px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  color: #fff;
+`;
+
+const Description = styled.div`
+  font-size: 18px;
+  color: #fff;
+  margin: 0px 20px;
 `;
