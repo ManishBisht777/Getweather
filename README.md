@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+basic weather app in react using styled components and open weather api
+#
+Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
